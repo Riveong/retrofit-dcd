@@ -1,6 +1,6 @@
 package com.riveong.retrofit_dcd.ui
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,57 +9,44 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.riveong.retrofit_dcd.data.response.GithubResponse
 import com.riveong.retrofit_dcd.data.response.ItemsItem
 import com.riveong.retrofit_dcd.data.retrofit.ApiConfig
-import com.riveong.retrofit_dcd.databinding.ActivityMainBinding
+import com.riveong.retrofit_dcd.databinding.ActivitySearchedBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MainActivity : AppCompatActivity() {
+class SearchedActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivitySearchedBinding
 
     companion object{
-        private const val TAG = "MainActivity"
-        private const val GITHUB_USER = "Gabriel"
+        private const val TAG = "SearchedActivity"
+        const val EXTRA_GITHUB_USER = "extra_github_user"
 
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivitySearchedBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.hide()
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvReview.layoutManager = layoutManager
 
 
-        findGithub()
-        val searchView = binding.searchView
-        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                val userInputs = searchView.query.toString()
-                val searchintent = Intent(this@MainActivity, SearchedActivity::class.java)
-                searchintent.putExtra(SearchedActivity.EXTRA_GITHUB_USER, userInputs)
-                startActivity(searchintent)
-                return true
-            }
+        val usernameIntented = intent.getStringExtra(EXTRA_GITHUB_USER)
 
-            override fun onQueryTextChange(p0: String?): Boolean {
-                return true
-            }
-        })
-
-
-
-
+        findGithub(usernameIntented.toString())
+        binding.SAtvTitle.text = usernameIntented
     }
 
 
-    private fun findGithub() {
+    private fun findGithub(extraidk: String) {
         showLoading(true)
-        val client = ApiConfig.getApiService().getGithub(GITHUB_USER)
+        val client = ApiConfig.getApiService().getGithub(extraidk)
         client.enqueue(object : Callback<GithubResponse> {
             override fun onResponse(
                 call: Call<GithubResponse>,
@@ -86,8 +73,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setGithubData(github: GithubResponse){
-        binding.tvTitle.text = "Found: ${github.totalCount}"
-        binding.tvDescription.text = "Incomplete results status: ${github.incompleteResults}"
+        binding.SAtvTitle.text = "Found: ${github.totalCount}"
+        binding.SAtvDescription.text = "Incomplete results status: ${github.incompleteResults}"
 
 
     }
@@ -96,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = GithubAdapter()
         adapter.submitList(githubItems)
         binding.rvReview.adapter = adapter
+
     }
 
 
