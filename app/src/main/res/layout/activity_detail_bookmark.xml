@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.DetailedActivity">
+        tools:context=".ui.DetailBookmarkActivity">
 
 
         <ImageView
@@ -90,7 +90,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pagination"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
@@ -99,14 +99,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:backgroundTint="#B3CBFF"
+            android:backgroundTint="#FFB3B3"
             android:foregroundGravity="bottom"
             app:fabSize="normal"
             app:layout_anchorGravity="bottom|end"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_bookmark_24" />
+            app:srcCompat="@drawable/baseline_close_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

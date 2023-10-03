@@ -58,6 +58,8 @@ class SearchedActivity : AppCompatActivity() {
                     if (responseBody != null) {
                         setGithubData(responseBody)
                         setUserAnuData(responseBody.items)
+                        println("===========================================")
+                        println(responseBody.items)
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")

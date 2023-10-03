@@ -54,6 +54,7 @@ class FragmentFollowers : Fragment() {
 
     private fun fetchFollowers(username:String? ) {
         showLoading(true)
+        binding.statusText.visibility = View.INVISIBLE
         val client = ApiConfig.getApiService().getFollowers(username)
         client.enqueue(object : Callback<List<ItemsItem>> {
             override fun onResponse(
@@ -63,18 +64,22 @@ class FragmentFollowers : Fragment() {
                 if (response.isSuccessful) {
                     showLoading(false)
                     val responseBody = response.body()
-                    if (responseBody != null) {
+                    if (!responseBody.isNullOrEmpty()) {
+
+                        binding.statusText.visibility = View.GONE
                         val followers = responseBody
                         Log.e("FOLLOWERS",followers.toString())
                         setFollowersAnuData(followers)
-                    }
-                } else {
+                    } else {
+                        showLoading(false)
+                        binding.statusText.visibility = View.VISIBLE
 
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
-
+                showLoading(false)
             }
         })
     }

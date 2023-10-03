@@ -40,6 +40,7 @@ class GithubAdapter : ListAdapter<ItemsItem, GithubAdapter.MyViewHolder>(DIFF_CA
             val intent = Intent(holder.itemView.context, DetailedActivity::class.java)
             intent.putExtra(DetailedActivity.EXTRA_TES,user.login)
             intent.putExtra(DetailedActivity.EXTRA_NAME,user.login)
+            intent.putExtra(DetailedActivity.EXTRA_AVATAR,user.avatarUrl)
             holder.itemView.context.startActivity(intent)
 
 

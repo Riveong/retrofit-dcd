@@ -12,5 +12,6 @@
     <string name="tab_lay2">Following</string>
     <string name="apptitle">Github API Frontier</string>
     <string name="appdesc">APP to make your github stalking activity\n100% easier.</string>
-    <string name="appuse">To use the app press the search button above and search your prey.</string>
+    <string name="appuse">To use the app press the search button above and search your prey. There is also bookmark feature.</string>
+    <string name="bookmarked">Bookmarked</string>
 </resources>

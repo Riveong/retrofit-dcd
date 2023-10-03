@@ -1,5 +1,6 @@
 package com.riveong.retrofit_dcd.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -20,14 +21,16 @@ import com.riveong.retrofit_dcd.databinding.ActivityDetailedBinding
 import com.riveong.retrofit_dcd.ui.model.SavedAddUpdateViewModel
 import com.riveong.retrofit_dcd.ui.model.ViewModelFactory
 import com.riveong.retrofit_dcd.database.SavedDao
+import com.riveong.retrofit_dcd.databinding.ActivityBookmarkListBinding
+import com.riveong.retrofit_dcd.databinding.ActivityDetailBookmarkBinding
 import com.riveong.retrofit_dcd.ui.model.SavedMainViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailedActivity : AppCompatActivity() {
+class DetailBookmarkActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityDetailedBinding
+    private lateinit var binding: ActivityDetailBookmarkBinding
 
     companion object {
         const val EXTRA_TES = "extra_test"
@@ -45,7 +48,6 @@ class DetailedActivity : AppCompatActivity() {
     }
 
     private var fragmentManager: FragmentManager? = null
-    private var isEdit = false
     private var saved: Saved? = null
 
 
@@ -54,7 +56,7 @@ class DetailedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailedBinding.inflate(layoutInflater)
+        binding = ActivityDetailBookmarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fragmentManager = supportFragmentManager
         var isedit: Boolean
@@ -66,7 +68,7 @@ class DetailedActivity : AppCompatActivity() {
         var AvatarUrl = getDetailedUser(extraUsername)
         Log.w("BISA GA NIH",AvatarUrl)
 
-        binding.testView.text = extraUsername
+        binding.testView.text = extraName
         binding.name.text = extraName
 
         val tabL = binding.tabLayout
@@ -76,8 +78,8 @@ class DetailedActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
 
         //anunya
-        savedAddUpdateViewModel= obtainViewModel(this@DetailedActivity)
-        val savedMainViewModel = obtainViewModel2(this@DetailedActivity)
+        savedAddUpdateViewModel= obtainViewModel(this@DetailBookmarkActivity)
+        val savedMainViewModel = obtainViewModel2(this@DetailBookmarkActivity)
 
 
 
@@ -111,18 +113,22 @@ class DetailedActivity : AppCompatActivity() {
 
 
 
-            if(compare){
-                Toast.makeText(this@DetailedActivity,"Already Bookmarked (Check bookmark) ", Toast.LENGTH_SHORT).show()
-                saved = null
+                if(compare){
+
+                    Toast.makeText(this@DetailBookmarkActivity,"Already Deleted (bye bye) ", Toast.LENGTH_SHORT).show()
+                    saved = Saved(username,avatarURL)
+                    savedAddUpdateViewModel.delete(saved as Saved)
+                    saved = null
 
 
 
-            } else if (!compare){
-                saved = Saved(username,avatarURL)
-                savedAddUpdateViewModel.insert(saved as Saved)
-                saved = null
 
-            }
+
+
+                } else if (!compare){
+                    Toast.makeText(this@DetailBookmarkActivity,"Already Deleted", Toast.LENGTH_SHORT).show()
+
+                }
 
             }
 
@@ -146,6 +152,7 @@ class DetailedActivity : AppCompatActivity() {
         }.attach()
 
     }
+
 
     private fun obtainViewModel(activity: AppCompatActivity): SavedAddUpdateViewModel {
         val factory = ViewModelFactory.getInstance(activity.application)
@@ -194,7 +201,7 @@ class DetailedActivity : AppCompatActivity() {
         return avatar
     }
     private fun SetDetailedUser(Detail: DetailResponse) {
-        Glide.with(this@DetailedActivity)
+        Glide.with(this@DetailBookmarkActivity)
             .load(Detail.avatarUrl)
             .circleCrop()
             .into(binding.imageView)
@@ -218,4 +225,4 @@ class DetailedActivity : AppCompatActivity() {
         }
     }
 
-    }
+}

@@ -5,11 +5,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.riveong.retrofit_dcd.data.response.GithubResponse
 import com.riveong.retrofit_dcd.data.response.ItemsItem
 import com.riveong.retrofit_dcd.data.retrofit.ApiConfig
 import com.riveong.retrofit_dcd.databinding.ActivityMainBinding
+import com.riveong.retrofit_dcd.ui.model.MainViewModel
+import com.riveong.retrofit_dcd.ui.model.SettingPreferences
+import com.riveong.retrofit_dcd.ui.model.ViewModelFactoryTheme
+import com.riveong.retrofit_dcd.ui.model.dataStore
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +43,32 @@ class MainActivity : AppCompatActivity() {
         binding.rvReview.layoutManager = layoutManager
 
 
+
+
+
+        val switchTheme = binding.ThemeSwitch
+
+        val pref = SettingPreferences.getInstance(application.dataStore)
+        val mainViewModel = ViewModelProvider(this, ViewModelFactoryTheme(pref)).get(
+            MainViewModel::class.java
+        )
+        mainViewModel.getThemeSettings().observe(this){isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                switchTheme.isChecked = true
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                switchTheme.isChecked = false
+            }
+        }
+
+
+        switchTheme.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            mainViewModel.saveThemeSetting(isChecked)
+        }
+
+
+
         findGithub()
         val searchView = binding.searchView
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -51,6 +85,12 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+
+
+        binding.btnBookmark.setOnClickListener {
+            val intent = Intent(this, BookmarkList::class.java)
+            startActivity(intent)
+        }
 
 
 

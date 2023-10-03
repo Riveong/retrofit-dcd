@@ -15,6 +15,12 @@
         android:theme="@style/Theme.Retrofitdcd"
         tools:targetApi="31">
         <activity
+            android:name=".ui.DetailBookmarkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.BookmarkList"
+            android:exported="false" />
+        <activity
             android:name=".ui.DetailedActivity"
             android:exported="false" />
         <activity

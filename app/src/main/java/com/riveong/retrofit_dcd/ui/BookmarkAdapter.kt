@@ -9,17 +9,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.riveong.retrofit_dcd.data.normal.bookmarkDataclass
 import com.riveong.retrofit_dcd.data.response.ItemsItem
 import com.riveong.retrofit_dcd.databinding.ItemReviewBinding
 
-class FollowersAdapter : ListAdapter<ItemsItem, FollowersAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class BookmarkAdapter : ListAdapter<bookmarkDataclass, BookmarkAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
 
     class MyViewHolder(val binding: ItemReviewBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: ItemsItem){
+        fun bind(user: bookmarkDataclass){
             binding.tvItem.text = "${user.login}"
             Glide.with(itemView)
-                .load(user.avatarUrl)
+                .load(user.avatarurl)
                 .circleCrop()
                 .into(binding.imgItemPhoto)
 
@@ -36,16 +37,18 @@ class FollowersAdapter : ListAdapter<ItemsItem, FollowersAdapter.MyViewHolder>(D
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = getItem(position)
         holder.bind(user)
-        Log.w("FollowerAdapter","random")
+        Log.w("Bookmark Adapter","random")
+
 
 
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailedActivity::class.java)
-            intent.putExtra(DetailedActivity.EXTRA_TES,user.login)
-            intent.putExtra(DetailedActivity.EXTRA_NAME,user.login)
-            intent.putExtra(DetailedActivity.EXTRA_AVATAR, user.avatarUrl)
+            val intent = Intent(holder.itemView.context, DetailBookmarkActivity::class.java)
+            intent.putExtra(DetailBookmarkActivity.EXTRA_TES,user.login)
+            intent.putExtra(DetailBookmarkActivity.EXTRA_NAME,user.login)
+            intent.putExtra(DetailBookmarkActivity.EXTRA_AVATAR, user.avatarurl)
             holder.itemView.context.startActivity(intent)
+
 
 
 
@@ -57,11 +60,11 @@ class FollowersAdapter : ListAdapter<ItemsItem, FollowersAdapter.MyViewHolder>(D
 
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ItemsItem>() {
-            override fun areItemsTheSame(oldItem: ItemsItem, newItem: ItemsItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<bookmarkDataclass>() {
+            override fun areItemsTheSame(oldItem: bookmarkDataclass, newItem: bookmarkDataclass): Boolean {
                 return oldItem == newItem
             }
-            override fun areContentsTheSame(oldItem: ItemsItem, newItem: ItemsItem): Boolean {
+            override fun areContentsTheSame(oldItem: bookmarkDataclass, newItem: bookmarkDataclass): Boolean {
                 return oldItem == newItem
             }
         }
